@@ -6,29 +6,29 @@ on:
       - main
 
 jobs:
-  merge_branches:
+  auto-merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # fetch full history for merge
 
       - name: Setup Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge into branch1
+      - name: Merge main into branch1
         run: |
           git fetch origin branch1
           git checkout branch1
           git merge origin/main --no-ff -m "Auto-merge main into branch1"
-          git push origin branch1
+          git push origin branch1 || echo "No changes to push"
 
-      - name: Merge into branch2
+      - name: Merge main into branch2
         run: |
           git fetch origin branch2
           git checkout branch2
           git merge origin/main --no-ff -m "Auto-merge main into branch2"
-          git push origin branch2
+          git push origin branch2 || echo "No changes to push"
