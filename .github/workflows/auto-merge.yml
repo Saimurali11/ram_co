@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # fetch full history for merge
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
@@ -23,12 +23,14 @@ jobs:
         run: |
           git fetch origin branch1
           git checkout branch1
-          git merge origin/main --no-ff -m "Auto-merge main into branch1"
-          git push origin branch1 || echo "No changes to push"
+          git reset --hard origin/branch1
+          git merge origin/main --no-ff -m "Auto-merge main into branch1" || echo "Nothing to merge"
+          git push origin branch1
 
       - name: Merge main into branch2
         run: |
           git fetch origin branch2
           git checkout branch2
-          git merge origin/main --no-ff -m "Auto-merge main into branch2"
-          git push origin branch2 || echo "No changes to push"
+          git reset --hard origin/branch2
+          git merge origin/main --no-ff -m "Auto-merge main into branch2" || echo "Nothing to merge"
+          git push origin branch2
