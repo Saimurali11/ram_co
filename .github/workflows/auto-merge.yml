@@ -9,23 +9,23 @@ jobs:
   merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge into branch1
+      - name: Merge main into branch1
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin branch1
           git checkout branch1
-          git merge origin/main --no-edit
+          git merge origin/main --no-edit || true
           git push origin branch1
 
-      - name: Merge into branch2
+      - name: Merge main into branch2
         run: |
-          git fetch origin branch2
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout branch2
-          git merge origin/main --no-edit
+          git merge origin/main --no-edit || true
           git push origin branch2
