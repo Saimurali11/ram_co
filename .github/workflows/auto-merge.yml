@@ -1,0 +1,31 @@
+name: Auto Merge Main to Branches
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Merge into branch1
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin branch1
+          git checkout branch1
+          git merge origin/main --no-edit
+          git push origin branch1
+
+      - name: Merge into branch2
+        run: |
+          git fetch origin branch2
+          git checkout branch2
+          git merge origin/main --no-edit
+          git push origin branch2
