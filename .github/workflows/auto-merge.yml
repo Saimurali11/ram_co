@@ -1,4 +1,4 @@
-name: Auto Merge Main to Branches
+name: Auto-Merge Main into Branches
 
 on:
   push:
@@ -9,26 +9,16 @@ jobs:
   auto-merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Configure Git
+      - uses: actions/checkout@v3
+      - name: Merge into branch1
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Merge main into branch1
-        run: |
-          git fetch origin branch1
           git checkout branch1
-          git merge origin/main --no-edit || echo "Nothing to merge"
+          git merge main --no-ff -m "Auto-merge main into branch1"
           git push origin branch1
-
-      - name: Merge main into branch2
+      - name: Merge into branch2
         run: |
-          git fetch origin branch2
           git checkout branch2
-          git merge origin/main --no-edit || echo "Nothing to merge"
+          git merge main --no-ff -m "Auto-merge main into branch2"
           git push origin branch2
