@@ -14,37 +14,49 @@ jobs:
   sync-branch1:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout branch1
         uses: actions/checkout@v4
         with:
+          ref: branch1
           fetch-depth: 0
 
+      - name: Reset branch1 promotion branch to main
+        run: |
+          git fetch origin main:main
+          git reset --hard main
+
       - name: Create Pull Request to branch1
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Auto sync main to branch1
-          title: Auto sync main to branch1
-          body: Automatically created PR from main to branch1
           branch: auto-sync-main-to-branch1
           base: branch1
+          title: Auto sync main to branch1
+          body: Automatically created PR from main to branch1
+          commit-message: Auto sync main to branch1
           delete-branch: true
 
   sync-branch2:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout branch2
         uses: actions/checkout@v4
         with:
+          ref: branch2
           fetch-depth: 0
 
+      - name: Reset branch2 promotion branch to main
+        run: |
+          git fetch origin main:main
+          git reset --hard main
+
       - name: Create Pull Request to branch2
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Auto sync main to branch2
-          title: Auto sync main to branch2
-          body: Automatically created PR from main to branch2
           branch: auto-sync-main-to-branch2
           base: branch2
+          title: Auto sync main to branch2
+          body: Automatically created PR from main to branch2
+          commit-message: Auto sync main to branch2
           delete-branch: true
