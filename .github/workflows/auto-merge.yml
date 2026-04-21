@@ -1,36 +1,50 @@
-name: Auto Merge Main to Branches
+name: Auto Sync Branches
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  auto-merge:
+  sync-branch1:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Create Pull Request to branch1
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Auto sync main to branch1
+          title: Auto sync main to branch1
+          body: Automatically created PR from main to branch1
+          branch: auto-sync-main-to-branch1
+          base: branch1
+          delete-branch: true
 
-      - name: Merge main into branch1
-        run: |
-          git fetch origin branch1
-          git checkout branch1
-          git reset --hard origin/branch1
-          git merge origin/main --no-ff -m "Auto-merge main into branch1" || echo "Nothing to merge"
-          git push origin branch1
+  sync-branch2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Merge main into branch2
-        run: |
-          git fetch origin branch2
-          git checkout branch2
-          git reset --hard origin/branch2
-          git merge origin/main --no-ff -m "Auto-merge main into branch2" || echo "Nothing to merge"
-          git push origin branch2
+      - name: Create Pull Request to branch2
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Auto sync main to branch2
+          title: Auto sync main to branch2
+          body: Automatically created PR from main to branch2
+          branch: auto-sync-main-to-branch2
+          base: branch2
+          delete-branch: true
